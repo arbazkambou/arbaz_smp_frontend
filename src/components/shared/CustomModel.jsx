@@ -17,11 +17,12 @@ export function CustomModel({
   children,
   openModel,
   setIsOpenModel,
+  width = "30",
 }) {
   return (
     <Dialog open={openModel} onOpenChange={setIsOpenModel}>
       <DialogTrigger asChild>{modelTrigger}</DialogTrigger>
-      <DialogContent className="max-w-[90%] sm:max-w-[60%]">
+      <DialogContent className={`max-w-[90%] sm:max-w-[60%]`}>
         {title && descrption && (
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>

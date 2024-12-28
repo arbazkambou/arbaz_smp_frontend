@@ -1,8 +1,5 @@
 "use client";
 
-import { useAuth } from "@/providers/AuthProvider";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -13,7 +10,9 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/providers/AuthProvider";
 import { Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 function Homepage() {
   const { isAuthenticated } = useAuth();
@@ -22,11 +21,6 @@ function Homepage() {
   if (!isAuthenticated) {
     return router.push("/login");
   }
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     router.push("/login");
-  //   }
-  // }, []);
 
   return (
     <SidebarProvider>

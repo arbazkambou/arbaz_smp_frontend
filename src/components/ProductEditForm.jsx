@@ -1,6 +1,6 @@
 "use client";
 
-import { addProduct } from "@/apis/productApis";
+import { addProduct, updateProduct } from "@/apis/productApis";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -18,30 +18,33 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-export default function ProductUploadForm({ setIsOpenModel }) {
+export default function ProductEditForm({ setIsOpenModel, product }) {
   const {
     register,
     handleSubmit,
     reset,
     control,
     formState: { errors },
-  } = useForm();
-  const queryClient = useQueryClient();
+  } = useForm({
+    defaultValues: product,
+  });
+  const queryCLient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
-    mutationFn: addProduct,
+    mutationFn: updateProduct,
     onSuccess: () => {
-      toast.success("Product uploaded!");
-      queryClient.invalidateQueries(["userProducts"]);
+      queryCLient.invalidateQueries(["userProducts"]);
+      toast.success("Product updated!");
       reset();
       setIsOpenModel(false);
     },
-
     onError: () => {
-      toast.error("Uploading product failed");
+      toast.error("Updating product failed");
     },
   });
+
   function onSubmit(formData) {
-    mutate(formData);
+    mutate({ productId: product._id, productData: formData });
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -58,6 +61,7 @@ export default function ProductUploadForm({ setIsOpenModel }) {
               },
             })}
             disabled={isPending}
+            defaultValue={product.name}
           />
           {errors.name && (
             <p className="text-red-600 text-xs">{errors.name.message}</p>
@@ -202,7 +206,7 @@ export default function ProductUploadForm({ setIsOpenModel }) {
         </div>
         <div className="grid gap-2">
           <Button type="submit" disabled={isPending}>
-            {isPending ? "Processing..." : "Update"}
+            {isPending ? "Processing..." : "Upload"}
           </Button>
           <Button
             variant="outline"

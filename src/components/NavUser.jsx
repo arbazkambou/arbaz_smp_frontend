@@ -25,11 +25,22 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/providers/AuthProvider";
+import Link from "next/link";
+import { Skeleton } from "./ui/skeleton";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const { logOut, user: userData } = useAuth();
-
+  const { logOut, user: userData, isAuthLoading } = useAuth();
+  if (isAuthLoading)
+    return (
+      <div className="flex items-center space-x-4">
+        <Skeleton className="h-12 w-12 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-4 w-[100px]" />
+        </div>
+      </div>
+    );
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -42,7 +53,7 @@ export function NavUser() {
               <Avatar className="h-8 w-8 rounded-lg">
                 {/* <AvatarImage src={userData.avatar} alt={userData.name} /> */}
                 <AvatarFallback className="rounded-lg bg-green-200">
-                  {userData.name[0]}
+                  {userData?.name[0]}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -77,10 +88,12 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
+              <Link href={"/profile"}>
+                <DropdownMenuItem>
+                  <BadgeCheck />
+                  Account
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuItem>
                 <CreditCard />
                 Billing

@@ -1,6 +1,5 @@
 "use client";
 
-import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -8,6 +7,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { FilterProduct } from "./FilterProduct";
+import { NavUser } from "./NavUser";
 
 const data = {
   user: {
@@ -21,7 +21,7 @@ export function AppSidebar({ ...props }) {
   return (
     <Sidebar open={true} {...props}>
       <SidebarHeader>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarHeader>
       <SidebarContent>
         <FilterProduct />

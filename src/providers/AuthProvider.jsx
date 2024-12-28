@@ -7,6 +7,7 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children, token }) {
   const [isAuthenticated, setIsAuthenticated] = useState(token ? true : false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   const [user, setUser] = useState(
     Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null
@@ -15,12 +16,14 @@ export function AuthProvider({ children, token }) {
   useEffect(function () {
     async function authenticateUser() {
       try {
+        setIsAuthLoading(true);
         const data = await fetchUser();
-        console.log("data", data);
         setIsAuthenticated(true);
         setUser(data);
         Cookies.set("user", JSON.stringify(data), { expires: 1 });
+        setIsAuthLoading(false);
       } catch (error) {
+        setIsAuthLoading(false);
         logOut();
       }
     }
@@ -36,7 +39,14 @@ export function AuthProvider({ children, token }) {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, setIsAuthenticated, user, setUser, logOut }}
+      value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        user,
+        setUser,
+        logOut,
+        isAuthLoading,
+      }}
     >
       {children}
     </AuthContext.Provider>
