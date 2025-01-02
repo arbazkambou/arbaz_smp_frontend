@@ -1,4 +1,8 @@
-import { deleteProduct, getProducts } from "@/apis/productApis";
+import {
+  deleteProduct,
+  getProducts,
+  getUserProducts,
+} from "@/apis/productApis";
 import {
   Table,
   TableBody,
@@ -18,80 +22,17 @@ import { CustomModel } from "./shared/CustomModel";
 import { Button } from "./ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { UploadimagesForm } from "./UploadimagesForm";
-
-const invoices = [
-  {
-    name: "Laptop",
-    description: "Very good",
-    price: "2600",
-    category: "Electronics",
-    age: "2",
-    status: "Pennding",
-    action: "Action",
-  },
-  {
-    name: "Laptop",
-    description: "Very good",
-    price: "2600",
-    category: "Electronics",
-    age: "2",
-    status: "Pennding",
-    action: "Action",
-  },
-  {
-    name: "Laptop",
-    description: "Very good",
-    price: "2600",
-    category: "Electronics",
-    age: "2",
-    status: "Pennding",
-    action: "Action",
-  },
-  {
-    name: "Laptop",
-    description: "Very good",
-    price: "2600",
-    category: "Electronics",
-    age: "2",
-    status: "Pennding",
-    action: "Action",
-  },
-  {
-    name: "Laptop",
-    description: "Very good",
-    price: "2600",
-    category: "Electronics",
-    age: "2",
-    status: "Pennding",
-    action: "Action",
-  },
-  {
-    name: "Laptop",
-    description: "Very good",
-    price: "2600",
-    category: "Electronics",
-    age: "2",
-    status: "Pennding",
-    action: "Action",
-  },
-  {
-    name: "Laptop",
-    description: "Very good",
-    price: "2600",
-    category: "Electronics",
-    age: "2",
-    status: "Pennding",
-    action: "Action",
-  },
-];
+import BidsOnProduct from "./bids/BidsOnProduct";
+import Image from "next/image";
 
 export function ProductTable() {
   const [openModel, setIsOpenModel] = useState(false);
   const [isEditModel, setIsEditModel] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState(null);
   const [isDeleteModel, setIsDeleteModel] = useState(false);
   const { data: products, isLoading } = useQuery({
     queryKey: ["userProducts"],
-    queryFn: getProducts,
+    queryFn: getUserProducts,
   });
 
   const queryClient = useQueryClient();
@@ -126,7 +67,9 @@ export function ProductTable() {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Description</TableHead>
+
+                <TableHead>Image</TableHead>
+
                 <TableHead>Price</TableHead>
                 <TableHead>Category</TableHead>
                 <TableHead>Age</TableHead>
@@ -138,8 +81,20 @@ export function ProductTable() {
               {products.map((product, index) => (
                 <TableRow key={index}>
                   <TableCell className="font-medium">{product.name}</TableCell>
-                  <TableCell>{product.description}</TableCell>
-                  <TableCell>{product.price}</TableCell>
+                  {product.images && product.images.length > 0 ? (
+                    <TableHead className="relative h-[100px]">
+                      <Image
+                        src={product.images[0].url}
+                        alt="image"
+                        objectFit="cover"
+                        fill
+                        className="rounded-md"
+                      />
+                    </TableHead>
+                  ) : (
+                    <TableCell>{product.description}</TableCell>
+                  )}
+                  <TableCell>Rs {product.price}</TableCell>
                   <TableCell>{product.category}</TableCell>
                   <TableCell>{product.age}</TableCell>
                   <TableCell>{product.status}</TableCell>
@@ -147,8 +102,13 @@ export function ProductTable() {
                     <CustomModel
                       title={"Edit Product"}
                       descrption={"Edit your product details here"}
-                      modelTrigger={<Edit className="hover:text-green-500" />}
-                      openModel={isEditModel}
+                      modelTrigger={
+                        <Edit
+                          className="hover:text-green-500"
+                          onClick={() => setCurrentProduct(product._id)}
+                        />
+                      }
+                      openModel={currentProduct === product._id && isEditModel}
                       setIsOpenModel={setIsEditModel}
                     >
                       <Tabs defaultValue="general" className="w-full">
@@ -194,6 +154,7 @@ export function ProductTable() {
                         </Button>
                       </div>
                     </CustomModel>
+                    <BidsOnProduct productId={product._id} />
                   </TableCell>
                 </TableRow>
               ))}

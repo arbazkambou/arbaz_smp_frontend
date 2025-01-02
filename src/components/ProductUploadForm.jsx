@@ -202,7 +202,7 @@ export default function ProductUploadForm({ setIsOpenModel }) {
         </div>
         <div className="grid gap-2">
           <Button type="submit" disabled={isPending}>
-            {isPending ? "Processing..." : "Update"}
+            {isPending ? "Processing..." : "Upload"}
           </Button>
           <Button
             variant="outline"

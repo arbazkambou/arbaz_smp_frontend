@@ -20,12 +20,43 @@ export async function getProducts() {
   }
 }
 
+export async function getProduct(id) {
+  try {
+    const res = await api.get(`/product/${id}`);
+    return res.data.data;
+  } catch (error) {
+    throw new Error("Could not get product");
+  }
+}
+
+export async function getUserProducts() {
+  try {
+    const res = await api.get(`/product/get-user-products`);
+    return res.data.data;
+  } catch (error) {
+    throw new Error("Could not get products");
+  }
+}
 export async function updateProduct({ productId, productData }) {
   try {
     const res = await api.post(`/product/${productId}`, productData);
     return res.data.data;
   } catch (error) {
     throw new Error("Could not get product");
+  }
+}
+
+export async function updateProductStatus({ productId, productStatus }) {
+  try {
+    console.log(`product id:${productId} and status:${productStatus}`);
+    const res = await api.post(`/product/${productId}/update-status`, {
+      status: productStatus,
+    });
+    console.log(res);
+    return res.data.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Could not update status");
   }
 }
 

@@ -1,5 +1,4 @@
 "use client";
-import { logoutUser } from "@/apis/authApis";
 import Header from "@/components/Header";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -20,32 +19,26 @@ import {
   CreditCard,
   LogOut,
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ProductTable } from "../ProductTable";
 import { Skeleton } from "../ui/skeleton";
-import Link from "next/link";
-import { useEffect } from "react";
+import { AdminManageProductTable } from "../admin/AdminManageProductTable";
+import { UsersTable } from "../admin/UsersTable";
 import Notifications from "../notification/Notifications";
-import MyBidsTable from "../bids/MyBidsTable";
 
-function Profilepage() {
+function Adminpage() {
   const { isAuthenticated, user: userData, isAuthLoading, logOut } = useAuth();
 
   const router = useRouter();
-
-  useEffect(() => {
-    if (userData.role === "admin") {
-      router.push("/admin");
-    }
-  }, []);
 
   if (!isAuthenticated) {
     router.push("/login");
   }
 
   return (
-    <section className="container mx-auto">
-      <header className="mt-3 flex justify-between items-center container mx-auto py-3 mb-3 bg-muted px-3 rounded-xl">
+    <section className="container px-4 mt-3 mx-auto">
+      <header className="flex justify-between items-center container mx-auto py-3 mb-3 bg-muted px-3 rounded-xl">
         <Header />
 
         {isAuthLoading ? (
@@ -114,18 +107,18 @@ function Profilepage() {
           </div>
         )}
       </header>
-      <div>
+      <div className="container mx-auto">
         <div>
           <Tabs defaultValue="product" className="w-full">
             <TabsList>
               <TabsTrigger value="product">Product</TabsTrigger>
-              <TabsTrigger value="bids">My Bids</TabsTrigger>
+              <TabsTrigger value="user">Users</TabsTrigger>
             </TabsList>
             <TabsContent value="product" className="w-full">
-              <ProductTable />
+              <AdminManageProductTable />
             </TabsContent>
-            <TabsContent value="bids">
-              <MyBidsTable />
+            <TabsContent value="user">
+              <UsersTable />
             </TabsContent>
           </Tabs>
         </div>
@@ -134,4 +127,4 @@ function Profilepage() {
   );
 }
 
-export default Profilepage;
+export default Adminpage;

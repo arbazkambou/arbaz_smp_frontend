@@ -129,7 +129,7 @@ export default function ProductEditForm({ setIsOpenModel, product }) {
                   <SelectContent position="popper">
                     <SelectItem value="electronics">Electronics</SelectItem>
                     <SelectItem value="clothing">Clothing</SelectItem>
-                    <SelectItem value="books">Books</SelectItem>
+                    <SelectItem value="sports">Sports</SelectItem>
                     <SelectItem value="home">Home & Garden</SelectItem>
                   </SelectContent>
                 </Select>
@@ -140,7 +140,7 @@ export default function ProductEditForm({ setIsOpenModel, product }) {
             )}
           </div>
         </div>
-        <div className="flex flex-col space-y-2">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
           <div className="flex items-center space-x-2">
             <Controller
               name="billAvailable"
@@ -203,6 +203,22 @@ export default function ProductEditForm({ setIsOpenModel, product }) {
 
             <label htmlFor="accessoriesAvailable">Accessories Available</label>
           </div>
+          <div className="flex items-center space-x-2">
+            <Controller
+              name="showBids"
+              control={control}
+              disabled={isPending}
+              render={({ field }) => (
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  id="showBids"
+                />
+              )}
+            />
+
+            <label htmlFor="showBids">Show Bids on product</label>
+          </div>
         </div>
         <div className="grid gap-2">
           <Button type="submit" disabled={isPending}>
@@ -211,7 +227,9 @@ export default function ProductEditForm({ setIsOpenModel, product }) {
           <Button
             variant="outline"
             type="reset"
-            onClick={() => setIsOpenModel(false)}
+            onClick={() => {
+              setIsOpenModel(false);
+            }}
             disabled={isPending}
           >
             Cancel

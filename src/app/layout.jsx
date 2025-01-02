@@ -3,7 +3,10 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import { Toaster } from "react-hot-toast";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import "./globals.css";
+import FilterProvider from "@/providers/FilterProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +25,9 @@ export default async function RootLayout({ children }) {
       <body className={inter.className}>
         <Toaster position="top-center" reverseOrder={false} />
         <AuthProvider token={token}>
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+            <FilterProvider>{children}</FilterProvider>
+          </QueryProvider>
         </AuthProvider>
       </body>
     </html>

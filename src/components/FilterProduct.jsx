@@ -5,9 +5,9 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "./ui/checkbox";
+import { useFilter } from "@/providers/FilterProvider";
 
 const categoryOptions = [
-  { value: "all", label: "All" },
   { value: "electronics", label: "Electronics" },
   { value: "clothing", label: "Clothing" },
   { value: "sports", label: "Sports" },
@@ -15,25 +15,29 @@ const categoryOptions = [
 ];
 
 const ageOptions = [
-  { value: "all", label: "All" },
-  { value: "0-3", label: "0-3 years old" },
-  { value: "4-7", label: "4-7 years old" },
-  { value: "8-12", label: "8-12 years old" },
-  { value: "13-17", label: "13-17 years old" },
+  { value: "0-2", label: "0-2 years old" },
+  { value: "3-5", label: "3-5 years old" },
+  { value: "6-8", label: "6-8 years old" },
+  { value: "9-11", label: "9-11 years old" },
 ];
 
 export function FilterProduct() {
-  const [category, setCategory] = useState("all");
-  const [age, setAge] = useState("all");
-
+  const { ageFilter, setAgeFilter, categoryFilter, setCategoryFilter } =
+    useFilter();
   const handleCategoryChange = (value) => {
-    setCategory(value);
-    // Here you would typically trigger a filter update in your main component or state management system
+    setCategoryFilter((prev) =>
+      prev.includes(value)
+        ? prev.filter((category) => category !== value)
+        : [...prev, value]
+    );
   };
 
   const handleAgeChange = (value) => {
-    setAge(value);
-    // Here you would typically trigger a filter update in your main component or state management system
+    setAgeFilter((prev) =>
+      prev.includes(value)
+        ? prev.filter((age) => age !== value)
+        : [...prev, value]
+    );
   };
 
   return (
@@ -42,10 +46,14 @@ export function FilterProduct() {
 
       <div className="mb-6">
         <h3 className="text-sm font-medium mb-2">By Category</h3>
-        <RadioGroup value={category} onValueChange={handleCategoryChange}>
-          {categoryOptions.map((option) => (
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" />
+        <div className="flex flex-col gap-3">
+          {categoryOptions.map((option, index) => (
+            <div className="flex items-center space-x-2" key={index}>
+              <Checkbox
+                id="terms"
+                checked={categoryFilter.includes(option.value)}
+                onCheckedChange={() => handleCategoryChange(option.value)}
+              />
               <label
                 htmlFor="terms"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -54,21 +62,25 @@ export function FilterProduct() {
               </label>
             </div>
           ))}
-        </RadioGroup>
+        </div>
       </div>
 
       <Separator className="my-4" />
 
       <div>
         <h3 className="text-sm font-medium mb-2">Age Range</h3>
-        <RadioGroup value={age} onValueChange={handleAgeChange}>
+        <div className="flex flex-col gap-3">
           {ageOptions.map((option) => (
             <div key={option.value} className="flex items-center space-x-2">
-              <RadioGroupItem value={option.value} id={`age-${option.value}`} />
+              <Checkbox
+                id={`age-${option.value}`}
+                checked={ageFilter.includes(option.value)}
+                onCheckedChange={() => handleAgeChange(option.value)}
+              />
               <Label htmlFor={`age-${option.value}`}>{option.label}</Label>
             </div>
           ))}
-        </RadioGroup>
+        </div>
       </div>
     </aside>
   );

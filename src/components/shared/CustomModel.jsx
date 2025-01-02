@@ -2,27 +2,40 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { DialogClose } from "@radix-ui/react-dialog";
+import { useEffect, useState } from "react";
 
 export function CustomModel({
   title,
   descrption,
   modelTrigger,
-  modelCloser,
   children,
   openModel,
   setIsOpenModel,
   width = "30",
 }) {
+  const [open, setOpen] = useState(openModel === true ? true : false);
+
+  useEffect(() => {
+    setOpen(openModel);
+  }, [openModel]);
+
+  function handleChange(e) {
+    if (e === true) {
+      setIsOpenModel(true);
+      setOpen(true);
+    } else {
+      setIsOpenModel(false);
+      setOpen(false);
+    }
+  }
   return (
-    <Dialog open={openModel} onOpenChange={setIsOpenModel}>
+    <Dialog open={open} onOpenChange={handleChange}>
       <DialogTrigger asChild>{modelTrigger}</DialogTrigger>
-      <DialogContent className={`max-w-[90%] sm:max-w-[60%]`}>
+      <DialogContent className={`max-w-[90%] sm:max-w-[80%]`}>
         {title && descrption && (
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
@@ -31,9 +44,6 @@ export function CustomModel({
         )}
 
         {children}
-        <DialogFooter>
-          <DialogClose asChild>{modelCloser}</DialogClose>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

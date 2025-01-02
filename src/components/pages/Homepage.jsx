@@ -13,13 +13,99 @@ import {
 import { useAuth } from "@/providers/AuthProvider";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
+import ProductCard from "../product/ProductCard";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "@/apis/productApis";
+import LoadingSpinner from "../LoadingSpinner";
+import { useFilter } from "@/providers/FilterProvider";
 
 function Homepage() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const { ageFilter, categoryFilter, searchFilter, setSearchFilter } =
+    useFilter();
+  const data = [
+    {
+      image: "/placeholder.svg?height=300&width=300",
+      name: "Premium Wireless Headphones",
+      description:
+        "Experience crystal-clear audio with our premium wireless headphones. Perfect for music lovers and professionals alike.",
+      price: 199.99,
+    },
+    {
+      image: "/placeholder.svg?height=300&width=300",
+      name: "Smart Fitness Tracker",
+      description:
+        "Track your health and fitness goals with our advanced smart fitness tracker. Features include heart rate monitoring, sleep tracking, and more.",
+      price: 89.99,
+    },
+    {
+      image: "/placeholder.svg?height=300&width=300",
+      name: "Ultra-Thin Laptop",
+      description:
+        "Boost your productivity with our ultra-thin, lightweight laptop. Powerful performance in a sleek design.",
+      price: 1299.99,
+    },
+    {
+      image: "/placeholder.svg?height=300&width=300",
+      name: "Ultra-Thin Laptop",
+      description:
+        "Boost your productivity with our ultra-thin, lightweight laptop. Powerful performance in a sleek design.",
+      price: 1299.99,
+    },
+    {
+      image: "/placeholder.svg?height=300&width=300",
+      name: "Ultra-Thin Laptop",
+      description:
+        "Boost your productivity with our ultra-thin, lightweight laptop. Powerful performance in a sleek design.",
+      price: 1299.99,
+    },
+    {
+      image: "/placeholder.svg?height=300&width=300",
+      name: "Ultra-Thin Laptop",
+      description:
+        "Boost your productivity with our ultra-thin, lightweight laptop. Powerful performance in a sleek design.",
+      price: 1299.99,
+    },
+  ];
+
+  const { data: products, isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+  });
 
   if (!isAuthenticated) {
     return router.push("/login");
+  }
+
+  if (isLoading) return <LoadingSpinner />;
+
+  let filteredProduct;
+
+  if (categoryFilter.length > 0) {
+    filteredProduct = products.filter((product) =>
+      categoryFilter.includes(product.category)
+    );
+  } else {
+    filteredProduct = products;
+  }
+
+  if (searchFilter) {
+    filteredProduct = filteredProduct.filter((product) =>
+      product.name
+        .trim()
+        .toLowerCase()
+        .includes(searchFilter.trim().toLowerCase())
+    );
+  }
+
+  if (ageFilter.length > 0) {
+    filteredProduct = filteredProduct.filter((product) =>
+      ageFilter.some((filter) => {
+        const ageRange = filter.split("-").map((value) => Number(value));
+        return product.age >= ageRange[0] && product.age <= ageRange[1];
+      })
+    );
   }
 
   return (
@@ -39,6 +125,8 @@ function Homepage() {
               type="search"
               placeholder="Search products..."
               className="w-full pl-10 pr-4 py-5 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              onChange={(e) => setSearchFilter(e.target.value)}
+              value={searchFilter}
             />
             <Button
               type="submit"
@@ -51,14 +139,18 @@ function Homepage() {
             </Button>
           </form>
         </div>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
+
+        {filteredProduct.length === 0 ? (
+          <p className="text-center text-2xl font-bold w-full h-[70vh] flex items-center justify-center">
+            No product found 🙂
+          </p>
+        ) : (
+          <div className="mt-2 mx-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {filteredProduct.map((product) => (
+              <ProductCard {...product} />
+            ))}
           </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-        </div>
+        )}
       </SidebarInset>
     </SidebarProvider>
   );
