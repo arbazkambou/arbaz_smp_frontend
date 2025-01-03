@@ -128,9 +128,10 @@ export default function ProductEditForm({ setIsOpenModel, product }) {
                   </SelectTrigger>
                   <SelectContent position="popper">
                     <SelectItem value="electronics">Electronics</SelectItem>
-                    <SelectItem value="clothing">Clothing</SelectItem>
-                    <SelectItem value="sports">Sports</SelectItem>
+                    <SelectItem value="cars">Car</SelectItem>
+                    <SelectItem value="property">Property</SelectItem>
                     <SelectItem value="home">Home & Garden</SelectItem>
+                    <SelectItem value="books">Books</SelectItem>
                   </SelectContent>
                 </Select>
               )}

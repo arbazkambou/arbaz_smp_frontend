@@ -9,9 +9,10 @@ import { useFilter } from "@/providers/FilterProvider";
 
 const categoryOptions = [
   { value: "electronics", label: "Electronics" },
-  { value: "clothing", label: "Clothing" },
-  { value: "sports", label: "Sports" },
-  { value: "home", label: "Home" },
+  { value: "cars", label: "Cars" },
+  { value: "property", label: "Property" },
+  { value: "home", label: "Home & Garden" },
+  { value: "books", label: "Books" },
 ];
 
 const ageOptions = [
