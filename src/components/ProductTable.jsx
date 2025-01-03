@@ -66,10 +66,8 @@ export function ProductTable() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-
                 <TableHead>Image</TableHead>
-
+                <TableHead>Name</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead>Category</TableHead>
                 <TableHead>Age</TableHead>
@@ -80,81 +78,64 @@ export function ProductTable() {
             <TableBody>
               {products.map((product, index) => (
                 <TableRow key={index}>
-                  <TableCell className="font-medium">{product.name}</TableCell>
-                  {product.images && product.images.length > 0 ? (
-                    <TableHead className="relative h-[100px]">
+                  <TableCell>
+                    <div className="h-20 relative">
                       <Image
-                        src={product.images[0].url}
+                        src={product?.images[0]?.url || ""}
                         alt="image"
-                        objectFit="cover"
                         fill
                         className="rounded-md"
                       />
-                    </TableHead>
-                  ) : (
-                    <TableCell>{product.description}</TableCell>
-                  )}
+                    </div>
+                  </TableCell>
+                  <TableCell>{product.name}</TableCell>
                   <TableCell>Rs {product.price}</TableCell>
                   <TableCell>{product.category}</TableCell>
                   <TableCell>{product.age}</TableCell>
                   <TableCell>{product.status}</TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <CustomModel
-                      title={"Edit Product"}
-                      descrption={"Edit your product details here"}
-                      modelTrigger={
-                        <Edit
-                          className="hover:text-green-500"
-                          onClick={() => setCurrentProduct(product._id)}
-                        />
-                      }
-                      openModel={currentProduct === product._id && isEditModel}
-                      setIsOpenModel={setIsEditModel}
-                    >
-                      <Tabs defaultValue="general" className="w-full">
-                        <TabsList>
-                          <TabsTrigger value="general">General</TabsTrigger>
-                          <TabsTrigger value="images">Images</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="general" className="w-full">
-                          <ProductEditForm
-                            setIsOpenModel={setIsEditModel}
-                            product={product}
+                  <TableCell>
+                    <div className="flex items-center gap-2 h-full">
+                      <CustomModel
+                        title={"Edit Product"}
+                        descrption={"Edit your product details here"}
+                        modelTrigger={
+                          <Edit
+                            className="hover:text-green-500"
+                            onClick={() => setCurrentProduct(product._id)}
                           />
-                        </TabsContent>
-                        <TabsContent value="images">
-                          <UploadimagesForm
-                            setIsOpenModel={setIsEditModel}
-                            product={product}
-                          />
-                        </TabsContent>
-                      </Tabs>
-                    </CustomModel>
-
-                    <CustomModel
-                      title={"Delete Product"}
-                      descrption={"Are your you sure you want to delete?"}
-                      modelTrigger={<Trash2 className="hover:text-red-500" />}
-                      openModel={isDeleteModel}
-                      setIsOpenModel={setIsDeleteModel}
-                      width="50"
-                    >
-                      <div className="flex items-center gap-4 w-full">
-                        <Button
-                          variant="destructive"
-                          onClick={() => mutate(product._id)}
-                        >
-                          {isPending ? "Deleting..." : "Delete"}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          onClick={() => setIsDeleteModel(false)}
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    </CustomModel>
-                    <BidsOnProduct productId={product._id} />
+                        }
+                        openModel={
+                          currentProduct === product._id && isEditModel
+                        }
+                        setIsOpenModel={setIsEditModel}
+                      >
+                        <Tabs defaultValue="general" className="w-full">
+                          <TabsList>
+                            <TabsTrigger value="general">General</TabsTrigger>
+                            <TabsTrigger value="images">Images</TabsTrigger>
+                          </TabsList>
+                          <TabsContent value="general" className="w-full">
+                            <ProductEditForm
+                              setIsOpenModel={setIsEditModel}
+                              product={product}
+                            />
+                          </TabsContent>
+                          <TabsContent value="images">
+                            <UploadimagesForm
+                              setIsOpenModel={setIsEditModel}
+                              product={product}
+                            />
+                          </TabsContent>
+                        </Tabs>
+                      </CustomModel>
+                      <button
+                        className="hover:text-red-500"
+                        onClick={() => mutate(product._id)}
+                      >
+                        {isPending ? "Deleting..." : <Trash2 />}
+                      </button>
+                      <BidsOnProduct productId={product._id} />
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

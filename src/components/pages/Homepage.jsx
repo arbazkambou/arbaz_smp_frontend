@@ -109,7 +109,7 @@ function Homepage() {
   }
 
   return (
-    <SidebarProvider>
+    <SidebarProvider className="bg-muted/10">
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center  gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 w-full">
@@ -145,7 +145,7 @@ function Homepage() {
             No product found 🙂
           </p>
         ) : (
-          <div className="mt-2 mx-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="mt-2 mx-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 bg-muted/50">
             {filteredProduct.map((product) => (
               <ProductCard {...product} />
             ))}

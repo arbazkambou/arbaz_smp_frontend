@@ -49,7 +49,7 @@ function Notifications() {
       descrption={"Here your notifications"}
       modelTrigger={
         <div
-          className="bg-muted h-10 w-10 flex items-center justify-center rounded-lg relative hover:bg-green-300 z-[20000]"
+          className="bg-muted h-10 w-10 flex items-center justify-center rounded-lg relative hover:bg-green-300 z-[20]"
           onClick={() => {
             setIsOpenModel(true);
             mutate();

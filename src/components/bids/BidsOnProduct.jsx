@@ -26,7 +26,7 @@ function BidsOnProduct({ productId }) {
       </Button>
     );
 
-  if (!data)
+  if (!data || data?.length === 0)
     return (
       <Button variant="outline" disabled>
         Show Bids

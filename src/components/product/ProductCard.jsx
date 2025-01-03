@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
-const ProductCard = ({ images, name, description, price, _id }) => {
+const ProductCard = ({ images, name, price, _id, age }) => {
   return (
-    <Card className="w-full max-w-sm mx-auto overflow-hidden shadow-lg">
+    <Card className="w-full max-w-sm mx-auto overflow-hidden shadow-lg p-2">
       <div className="relative h-48 overflow-hidden">
         {images && images[0]?.url ? (
           <Image
@@ -17,18 +17,17 @@ const ProductCard = ({ images, name, description, price, _id }) => {
           />
         ) : null}
       </div>
-      <CardContent className="p-4">
-        <h2 className="text-xl font-semibold mb-2 text-foreground">{name}</h2>
-        <p className="text-sm text-muted-foreground mb-4">{description}</p>
+      {/* <CardContent> */}
+      <div className="flex flex-col justify-center gap-[3px]">
+        <h2 className="text-lg font-semibold text-foreground">{name}</h2>
+        <p className="text-sm text-muted-foreground ">{age} years old</p>
         <p className="text-lg font-bold text-primary">
-          Rs {Math.round(Number(price.toFixed(2)))}
+          Rs {Math.round(Number(price.toFixed(2))).toLocaleString("pkr")}
         </p>
-      </CardContent>
-      <CardFooter className="p-4 pt-0">
-        <Link href={`/product/${_id}`}>
-          <Button className="w-full">View Detail</Button>
-        </Link>
-      </CardFooter>
+      </div>
+      <Link href={`/product/${_id}`}>
+        <Button className="w-full">View Detail</Button>
+      </Link>
     </Card>
   );
 };

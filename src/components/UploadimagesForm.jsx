@@ -69,16 +69,15 @@ export function UploadimagesForm({ setIsOpenModel, product }) {
           <h2>Existing Images</h2>
           <div className="grid grid-cols-5 place-content-between mt-1 gap-3 w-full mb-3">
             {product.images.map((img, index) => (
-              <Card className="p-2 ">
-                {/* Image Component */}
-                <Image
-                  key={index}
-                  src={img.url}
-                  alt={`Preview ${index}`}
-                  height={200}
-                  width={200}
-                  className="object-cover"
-                />
+              <Card className="p-2">
+                <div className="relative h-32">
+                  <Image
+                    key={index}
+                    src={img.url}
+                    alt={`Preview ${index}`}
+                    fill
+                  />
+                </div>
 
                 <div
                   aria-label="Delete Image"
@@ -123,13 +122,9 @@ export function UploadimagesForm({ setIsOpenModel, product }) {
           <div className="grid grid-cols-5 place-content-between mt-2 gap-3 w-full">
             {previews.map((img, index) => (
               <Card className="p-2">
-                <Image
-                  key={index}
-                  src={img}
-                  alt={`Preview ${index}`}
-                  height={150}
-                  width={150}
-                />
+                <div className="relative h-32">
+                  <Image key={index} src={img} alt={`Preview ${index}`} fill />
+                </div>
               </Card>
             ))}
           </div>

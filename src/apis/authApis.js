@@ -8,7 +8,7 @@ export async function login({ email, password }) {
     });
     return res.data.data;
   } catch (error) {
-    throw new Error("Invalid credentials");
+    throw new Error(error.response.data.message || "Invalid credentials");
   }
 }
 
