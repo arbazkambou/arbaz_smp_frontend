@@ -19,7 +19,7 @@ const data = {
 
 export function AppSidebar({ ...props }) {
   return (
-    <Sidebar open={true} {...props}>
+    <Sidebar {...props}>
       <SidebarHeader>
         <NavUser />
       </SidebarHeader>
