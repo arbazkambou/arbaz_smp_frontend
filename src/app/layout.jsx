@@ -16,15 +16,11 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token");
-  // const user = await fetchUser();
-  // console.log(user);
   return (
     <html lang="en">
       <body className={inter.className}>
         <Toaster position="top-center" reverseOrder={false} />
-        <AuthProvider token={token}>
+        <AuthProvider>
           <QueryProvider>
             <FilterProvider>{children}</FilterProvider>
           </QueryProvider>

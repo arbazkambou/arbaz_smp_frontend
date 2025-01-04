@@ -5,9 +5,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
-export function AuthProvider({ children, token }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(token ? true : false);
-  console.log("token", token);
+export function AuthProvider({ children }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    Cookies.get("user") ? true : false
+  );
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   const [user, setUser] = useState(
