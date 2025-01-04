@@ -7,6 +7,7 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children, token }) {
   const [isAuthenticated, setIsAuthenticated] = useState(token ? true : false);
+  console.log("token", token);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   const [user, setUser] = useState(
